@@ -17,10 +17,10 @@ public class TennisGame1 implements TennisGame {
     //Asignacion del incremento de puntaje.
     public void wonPoint(String PlayerName) {
         if (PlayerName == "player1") {
-            ScorePlayer1 += 1;
+            ScorePlayer1 ++;
         }
         else {
-            ScorePlayer2 += 1;
+            ScorePlayer2 ++;
         }
     }
 
@@ -28,19 +28,19 @@ public class TennisGame1 implements TennisGame {
     public String getScore() {
         String Score = "";
         if (ScorePlayer1 == ScorePlayer2){
-            Score = PuntajeDeEmpate(ScorePlayer1);
+            Score = PuntajeDeEmpate();
         }
-        else if (ScorePlayer1 >= 4 || ScorePlayer2 >= 4){
-            Score = Avance(ScorePlayer1, ScorePlayer2);
+        else if ((ScorePlayer1 >= 4) || (ScorePlayer2 >= 4)){
+            Score = Avance();
         } else{
             Score = Puntaje(ScorePlayer1) + "-" + Puntaje(ScorePlayer2);
-            }
+        }
         return Score;
     }
 
     //Opcion empate.
-    public String PuntajeDeEmpate(int ScorePlayer){
-        switch (ScorePlayer)
+    public String PuntajeDeEmpate(){
+        switch (ScorePlayer1)
         {
             case 0:
                 return "Love-All";
@@ -54,22 +54,20 @@ public class TennisGame1 implements TennisGame {
     }
 
     //opcion de ganador o jugador que avanza.
-    public String Avance(int ScorePlayer1, int ScorePlayer2){
-        String score = "";
+    public String Avance(){
         int DiferenciaDePuntaje = ScorePlayer1 - ScorePlayer2;
-        if (DiferenciaDePuntaje == 1){
-            score = "Advantage player1";
+        switch (DiferenciaDePuntaje){
+            case 1:
+                return "Advantage player1";
+            case -1:
+                return "Advantage player2";
+            default:
+                if (DiferenciaDePuntaje >= 2){
+                    return "Win for player1";
+                } else {
+                    return "Win for player2";
+                }
         }
-        else if (DiferenciaDePuntaje == -1){
-            score = "Advantage player2";
-        }
-        else if (DiferenciaDePuntaje >= 2){
-            score = "Win for player1";
-        }
-        else{
-            score = "Win for player2";
-        }
-        return score;
     }
 
     //Opcion de incremento de puntaje.
@@ -81,10 +79,8 @@ public class TennisGame1 implements TennisGame {
                 return "Fifteen";
             case 2:
                 return "Thirty";
-            case 3:
-                return "Forty";
             default:
-                return null;
+                return "Forty";
         }
     }
 }

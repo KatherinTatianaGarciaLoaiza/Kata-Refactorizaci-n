@@ -1,135 +1,91 @@
+/*Este es un codigo para un juegos de tennis con dificultad 2.
+ *Ha sido refactorizado por Katherin Tatiana Garcia Loaiza con fin de practicar la refactorizacion.
+ */
+public class TennisGame2 implements TennisGame{
 
-public class TennisGame2 implements TennisGame
-{
-    public int P1point = 0;
-    public int P2point = 0;
-    
-    public String P1res = "";
-    public String P2res = "";
-    private String player1Name;
-    private String player2Name;
+    private int ScorePlayer1 = 0;
+    private int ScorePlayer2 = 0;
+    private String Player1Name;
+    private String Player2Name;
 
-    public TennisGame2(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
+    //Asignacion de nombres de los jugadores
+    public TennisGame2(String Player1Name, String Player2Name) {
+        this.Player1Name = Player1Name;
+        this.Player2Name = Player2Name;
     }
 
+    //Seleccion de opcion: empate, aumento de puntaje o ganador.
     public String getScore(){
-        String score = "";
-        if (P1point == P2point && P1point < 4)
-        {
-            if (P1point==0)
-                score = "Love";
-            if (P1point==1)
-                score = "Fifteen";
-            if (P1point==2)
-                score = "Thirty";
-            score += "-All";
+        String Score = "";
+        if (Empate()){
+            Score = PuntajesIguales(ScorePlayer1);
+        }  else if(SeleccionDeAvance()){
+            Score = Avance();
+        } else {
+            Score = Puntaje(ScorePlayer1) + "-" + Puntaje(ScorePlayer2);
         }
-        if (P1point==P2point && P1point>=3)
-            score = "Deuce";
-        
-        if (P1point > 0 && P2point==0)
-        {
-            if (P1point==1)
-                P1res = "Fifteen";
-            if (P1point==2)
-                P1res = "Thirty";
-            if (P1point==3)
-                P1res = "Forty";
-            
-            P2res = "Love";
-            score = P1res + "-" + P2res;
-        }
-        if (P2point > 0 && P1point==0)
-        {
-            if (P2point==1)
-                P2res = "Fifteen";
-            if (P2point==2)
-                P2res = "Thirty";
-            if (P2point==3)
-                P2res = "Forty";
-            
-            P1res = "Love";
-            score = P1res + "-" + P2res;
-        }
-        
-        if (P1point>P2point && P1point < 4)
-        {
-            if (P1point==2)
-                P1res="Thirty";
-            if (P1point==3)
-                P1res="Forty";
-            if (P2point==1)
-                P2res="Fifteen";
-            if (P2point==2)
-                P2res="Thirty";
-            score = P1res + "-" + P2res;
-        }
-        if (P2point>P1point && P2point < 4)
-        {
-            if (P2point==2)
-                P2res="Thirty";
-            if (P2point==3)
-                P2res="Forty";
-            if (P1point==1)
-                P1res="Fifteen";
-            if (P1point==2)
-                P1res="Thirty";
-            score = P1res + "-" + P2res;
-        }
-        
-        if (P1point > P2point && P2point >= 3)
-        {
-            score = "Advantage player1";
-        }
-        
-        if (P2point > P1point && P1point >= 3)
-        {
-            score = "Advantage player2";
-        }
-        
-        if (P1point>=4 && P2point>=0 && (P1point-P2point)>=2)
-        {
-            score = "Win for player1";
-        }
-        if (P2point>=4 && P1point>=0 && (P2point-P1point)>=2)
-        {
-            score = "Win for player2";
-        }
-        return score;
-    }
-    
-    public void SetP1Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
-            P1Score();
-        }
-            
-    }
-    
-    public void SetP2Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
-            P2Score();
-        }
-            
-    }
-    
-    public void P1Score(){
-        P1point++;
-    }
-    
-    public void P2Score(){
-        P2point++;
+        return Score;
     }
 
+    //Asignacion del incremento de puntaje.
     public void wonPoint(String player) {
-        if (player == "player1")
-            P1Score();
-        else
-            P2Score();
+        if (player == "player1"){
+            ScorePlayer1 ++;
+        } else {
+            ScorePlayer2 ++;
+        }
+    }
+
+    //Retorna si es la opcion de empate.
+    public boolean Empate(){
+        return (ScorePlayer1 == ScorePlayer2);
+    }
+
+    //Retorna si es la opcion de avance.
+    public boolean SeleccionDeAvance(){
+        return ((ScorePlayer1 >= 4) || (ScorePlayer2 >= 4));
+    }
+
+    //Opcion de puntajes iguales.
+    public String PuntajesIguales(int ScorePlayer) {
+        switch (ScorePlayer) {
+            case 0:
+                return  "Love-All";
+            case 1:
+                return   "Fifteen-All";
+            case 2:
+                return  "Thirty-All";
+            default:
+                return   "Deuce";
+        }
+    }
+
+    public String Avance(){
+        int DiferenciaDePuntaje = ScorePlayer1 - ScorePlayer2;
+        switch (DiferenciaDePuntaje){
+            case 1:
+                return "Advantage player1";
+            case -1:
+                return "Advantage player2";
+            default:
+                if (DiferenciaDePuntaje >= 2){
+                    return "Win for player1";
+                } else {
+                    return "Win for player2";
+                }
+        }
+    }
+
+    public String Puntaje(int ScorePlayer){
+        switch (ScorePlayer) {
+            case 0:
+                return "Love";
+            case 1:
+                return  "Fifteen";
+            case 2:
+                return  "Thirty";
+            default:
+                return  "Forty";
+        }
     }
 }
