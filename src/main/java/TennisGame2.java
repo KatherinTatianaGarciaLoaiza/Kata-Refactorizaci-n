@@ -1,6 +1,9 @@
 /*Este es un codigo para un juegos de tennis con dificultad 2.
  *Ha sido refactorizado por Katherin Tatiana Garcia Loaiza con fin de practicar la refactorizacion.
  */
+import java.util.List;
+import java.util.Arrays;
+
 public class TennisGame2 implements TennisGame{
 
     private int ScorePlayer1 = 0;
@@ -18,9 +21,10 @@ public class TennisGame2 implements TennisGame{
     public String getScore(){
         String Score = "";
         if (Empate()){
-            Score = PuntajesIguales(ScorePlayer1);
+            Score = PuntajesIguales();
         }  else if(SeleccionDeAvance()){
-            Score = Avance();
+            int DiferenciaDePuntaje = ScorePlayer1 - ScorePlayer2;
+            Score = Avance(DiferenciaDePuntaje);
         } else {
             Score = Puntaje(ScorePlayer1) + "-" + Puntaje(ScorePlayer2);
         }
@@ -28,12 +32,8 @@ public class TennisGame2 implements TennisGame{
     }
 
     //Asignacion del incremento de puntaje.
-    public void wonPoint(String player) {
-        if (player == "player1"){
-            ScorePlayer1 ++;
-        } else {
-            ScorePlayer2 ++;
-        }
+    public void wonPoint(String Player) {
+        int puntaje = (Player == "player1") ? (ScorePlayer1 ++) : (ScorePlayer2 ++);
     }
 
     //Retorna si es la opcion de empate.
@@ -47,45 +47,26 @@ public class TennisGame2 implements TennisGame{
     }
 
     //Opcion de puntajes iguales.
-    public String PuntajesIguales(int ScorePlayer) {
-        switch (ScorePlayer) {
-            case 0:
-                return  "Love-All";
-            case 1:
-                return   "Fifteen-All";
-            case 2:
-                return  "Thirty-All";
-            default:
-                return   "Deuce";
-        }
+    public String PuntajesIguales() {
+        List<String> Puntajes = Arrays.asList(new String[] {"Love-All", "Fifteen-All", "Thirty-All", "Deuce", "Deuce"});
+        return Puntajes.get(ScorePlayer1);
     }
 
-    public String Avance(){
-        int DiferenciaDePuntaje = ScorePlayer1 - ScorePlayer2;
+    //Opcion de avance.
+    public String Avance(int DiferenciaDePuntaje){
         switch (DiferenciaDePuntaje){
             case 1:
                 return "Advantage player1";
             case -1:
                 return "Advantage player2";
             default:
-                if (DiferenciaDePuntaje >= 2){
-                    return "Win for player1";
-                } else {
-                    return "Win for player2";
-                }
+                return (DiferenciaDePuntaje >= 2)? "Win for player1" : "Win for player2";
         }
     }
 
+    //Opcion de puntaje.
     public String Puntaje(int ScorePlayer){
-        switch (ScorePlayer) {
-            case 0:
-                return "Love";
-            case 1:
-                return  "Fifteen";
-            case 2:
-                return  "Thirty";
-            default:
-                return  "Forty";
-        }
+        List<String> Puntajes = Arrays.asList(new String[] {"Love", "Fifteen", "Thirty", "Forty"});
+        return Puntajes.get(ScorePlayer);
     }
 }
